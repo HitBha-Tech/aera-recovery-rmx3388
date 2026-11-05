@@ -10,7 +10,7 @@ on:
       MANIFEST_BRANCH:
         description: 'AERA Manifest Branch'
         required: true
-        default: 'aera-12.1' # Change from 'main' to a valid branch like aera-12.1
+        default: 'aera-16.0' # Change from 'main' to a valid branch like aera-16.0
       DEVICE_VENDOR:
         description: 'Device Vendor'
         required: true
