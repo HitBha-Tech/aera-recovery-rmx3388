@@ -1,0 +1,5 @@
+PRODUCT_MAKEFILES := \
+    $(LOCAL_DIR)/twrp_RMX3388.mk
+
+COMMON_LUNCH_CHOICES := \
+    twrp_RMX3388-eng

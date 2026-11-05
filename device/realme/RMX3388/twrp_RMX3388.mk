@@ -1,0 +1,5 @@
+$(call inherit-product, device/realme/RMX3388/device.mk)
+
+PRODUCT_RELEASE_NAME := RMX3388
+PRODUCT_NAME := twrp_RMX3388
+TARGET_OTA_ASSERT_DEVICE := RMX3388
