@@ -7,7 +7,7 @@ on:
         description: 'AERA Manifest URL'
         required: true
         default: 'https://github.com/AERA-Recovery/android_manifest.git'
-            MANIFEST_BRANCH:
+      MANIFEST_BRANCH:
         description: 'AERA Manifest Branch'
         required: true
         default: 'aera-12.1' # Change from 'main' to a valid branch like aera-12.1
