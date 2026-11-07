@@ -19,62 +19,9 @@ jobs:
       - name: Check out device tree
         uses: actions/checkout@v4
 
-      - name: Free disk space
-        uses: jlumbroso/free-disk-space@main
-        with:
-          preinstalled-runtimes: true
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: true
-          swap-storage: false
-
-      - name: Install build dependencies
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib \
-            gcc-multilib git git-lfs gnupg gperf imagemagick lib32readline-dev lib32z1-dev \
-            libelf-dev liblz4-tool libncurses5-dev libssl-dev libxml2 libxml2-utils \
-            lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev \
-            python3 python-is-python3
-
-      - name: Install repo tool
-        run: |
-          mkdir -p "$HOME/.bin"
-          curl -fsSL https://storage.googleapis.com/git-repo-downloads/repo -o "$HOME/.bin/repo"
-          chmod a+rx "$HOME/.bin/repo"
-          echo "$HOME/.bin" >> "$GITHUB_PATH"
-
-      - name: Sync AERA Android 16 source
-        run: |
-          mkdir -p "$RUNNER_TEMP/aosp"
-          cd "$RUNNER_TEMP/aosp"
-          repo init -u https://github.com/AERA-Recovery/android_manifest.git -b aera-16.0 --depth=1
-          mkdir -p .repo/local_manifests
-          cat > .repo/local_manifests/aera-build.xml <<'XML'
-          <manifest>
-            <remove-project name="android_cts" />
-          </manifest>
-          XML
-          repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune -j4
-
-      - name: Add RMX3388 device tree
-        run: |
-          mkdir -p "$RUNNER_TEMP/aosp/device/realme"
-          cp -a "$GITHUB_WORKSPACE/device/realme/RMX3388" "$RUNNER_TEMP/aosp/device/realme/"
-
-      - name: Ensure build swap
-        run: |
-          current_swap_kb=$(awk 'NR > 1 { total += $3 } END { print total + 0 }' /proc/swaps)
-          if [ "$current_swap_kb" -lt 8388608 ]; then
-            sudo fallocate -l 8G "$RUNNER_TEMP/aera-build.swap"
-            sudo chmod 600 "$RUNNER_TEMP/aera-build.swap"
-            sudo mkswap "$RUNNER_TEMP/aera-build.swap"
-            sudo swapon "$RUNNER_TEMP/aera-build.swap"
-          fi
-          free -h
-          swapon --show
+      - name: rm
+        shell: bash 
+        run: rm -rf out/target/product/RMX3388/recovery out/target/product/RMX3388/obj/PACKAGING/recovery_intermediates
 
       - name: Build recovery image
         shell: bash
