@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'device/realme/RMX3388/**'
+      - '.github/workflows/build_aera.yml'
 
 permissions:
   contents: write
@@ -21,13 +22,13 @@ jobs:
       - name: Free disk space
         uses: jlumbroso/free-disk-space@main
         with:
-          tool-cache: true
+          preinstalled-runtimes: true
           android: true
           dotnet: true
           haskell: true
           large-packages: true
           docker-images: true
-          swap-storage: true
+          swap-storage: false
 
       - name: Install build dependencies
         run: |
