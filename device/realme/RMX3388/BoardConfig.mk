@@ -1,5 +1,6 @@
 DEVICE_PATH := device/realme/RMX3388
 
+# PRODUCT_* settings are defined in device.mk, before AOSP loads this file.
 TARGET_BOARD_PLATFORM := mt6833
 TARGET_BOOTLOADER_BOARD_NAME := RM6833
 TARGET_NO_BOOTLOADER := true
