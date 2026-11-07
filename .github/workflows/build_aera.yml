@@ -64,6 +64,18 @@ jobs:
           mkdir -p "$RUNNER_TEMP/aosp/device/realme"
           cp -a "$GITHUB_WORKSPACE/device/realme/RMX3388" "$RUNNER_TEMP/aosp/device/realme/"
 
+      - name: Ensure build swap
+        run: |
+          current_swap_kb=$(awk 'NR > 1 { total += $3 } END { print total + 0 }' /proc/swaps)
+          if [ "$current_swap_kb" -lt 8388608 ]; then
+            sudo fallocate -l 8G "$RUNNER_TEMP/aera-build.swap"
+            sudo chmod 600 "$RUNNER_TEMP/aera-build.swap"
+            sudo mkswap "$RUNNER_TEMP/aera-build.swap"
+            sudo swapon "$RUNNER_TEMP/aera-build.swap"
+          fi
+          free -h
+          swapon --show
+
       - name: Build recovery image
         shell: bash
         run: |
@@ -73,7 +85,7 @@ jobs:
           export LC_ALL=C
           source build/envsetup.sh
           lunch twrp_RMX3388-bp2a-eng
-          m -j2 adbd recoveryimage
+          m -j1 adbd recoveryimage
 
       - name: Check recovery image and calculate hash
         run: |
