@@ -23,13 +23,11 @@ jobs:
         shell: bash
         run: if [[ ! -f "$RUNNER_TEMP/aosp/build/envsetup.sh" ]]; then
                  echo "::error::AERA source tree is missing. Check that the sync step succeeded in this job."
-                 exit 1
-                   fi
-                cd "$RUNNER_TEMP/aosp"
+                 exit 1   
 
       - name: Build recovery image
         shell: bash
-        run: |
+        run: | cd "$RUNNER_TEMP/aosp"
           export AERA_BUILD_DEVICE=RMX3388
           export ALLOW_MISSING_DEPENDENCIES=true
           export LC_ALL=C
