@@ -23,7 +23,8 @@ jobs:
         shell: bash
         run: if [[ ! -f "$RUNNER_TEMP/aosp/build/envsetup.sh" ]]; then
                  echo "::error::AERA source tree is missing. Check that the sync step succeeded in this job."
-                 exit 1   
+                 exit 1 
+                 fi
 
       - name: Build recovery image
         shell: bash
