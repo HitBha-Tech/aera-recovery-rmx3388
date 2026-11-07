@@ -19,14 +19,17 @@ jobs:
       - name: Check out device tree
         uses: actions/checkout@v4
 
-      - name: rm
-        shell: bash 
-        run: rm -rf out/target/product/RMX3388/recovery out/target/product/RMX3388/obj/PACKAGING/recovery_intermediates
+      - name: sync
+        shell: bash
+        run: if [[ ! -f "$RUNNER_TEMP/aosp/build/envsetup.sh" ]]; then
+                 echo "::error::AERA source tree is missing. Check that the sync step succeeded in this job."
+                 exit 1
+                   fi
+                cd "$RUNNER_TEMP/aosp"
 
       - name: Build recovery image
         shell: bash
         run: |
-          cd "$RUNNER_TEMP/aosp"
           export AERA_BUILD_DEVICE=RMX3388
           export ALLOW_MISSING_DEPENDENCIES=true
           export LC_ALL=C
