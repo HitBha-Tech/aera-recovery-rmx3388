@@ -71,8 +71,8 @@ jobs:
           export ALLOW_MISSING_DEPENDENCIES=true
           export LC_ALL=C
           source build/envsetup.sh
-          lunch twrp_RMX3388-eng
-          m -j2 recoveryimage
+          lunch twrp_RMX3388-bp2a-eng
+          m -j2 adbd recoveryimage
 
       - name: Check recovery image and calculate hash
         run: |
