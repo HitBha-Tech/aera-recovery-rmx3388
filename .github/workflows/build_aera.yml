@@ -64,6 +64,27 @@ jobs:
           mkdir -p "$RUNNER_TEMP/aosp/device/realme"
           cp -a "$GITHUB_WORKSPACE/device/realme/RMX3388" "$RUNNER_TEMP/aosp/device/realme/"
 
+      - name: Exclude baseline vendor symlink from recovery ramdisk sync
+        run: |
+          python3 - "$RUNNER_TEMP/aosp/build/make/core/Makefile" <<'PY'
+          from pathlib import Path
+          import sys
+
+          makefile = Path(sys.argv[1])
+          lines = makefile.read_text().splitlines(keepends=True)
+          matches = [i for i, line in enumerate(lines)
+                     if line.lstrip().startswith("rsync -a --exclude=sdcard")
+                     and "$(TARGET_ROOT_OUT)" in line
+                     and "$(TARGET_RECOVERY_OUT)" in line]
+          if len(matches) != 1:
+              raise SystemExit(f"Expected one recovery root rsync line, found {len(matches)}")
+
+          index = matches[0]
+          lines[index] = lines[index].replace(
+              "--exclude=sdcard", "--exclude=sdcard --exclude=/root/vendor", 1)
+          makefile.write_text("".join(lines))
+          PY
+
       - name: Ensure build swap
         run: |
           current_swap_kb=$(awk 'NR > 1 { total += $3 } END { print total + 0 }' /proc/swaps)
