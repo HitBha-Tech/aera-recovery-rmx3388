@@ -41,7 +41,7 @@ BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_SUPER_PARTITION_SIZE := 10737418240
 BOARD_SUPER_PARTITION_GROUPS := main
 BOARD_MAIN_SIZE := 10735321088
-BOARD_MAIN_PARTITION_LIST := system vendor product odm my_product my_engineering my_stock my_heytap my_company my_carrier my_region my_preload my_manifest
+BOARD_MAIN_PARTITION_LIST := system vendor product odm
 
 BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
